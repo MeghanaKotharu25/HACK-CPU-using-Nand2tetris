@@ -1,0 +1,16 @@
+CHIP Mux8to1 {
+    IN in[8], sel[3];  // 8 input lines, 3 select lines
+    OUT out;           // 1 output line
+
+    PARTS:
+    Mux(a=in[0], b=in[1], sel=sel[2], out=t0);
+    Mux(a=in[2], b=in[3], sel=sel[2], out=t1);
+    Mux(a=in[4], b=in[5], sel=sel[2], out=t2);
+    Mux(a=in[6], b=in[7], sel=sel[2], out=t3);
+    
+    Mux(a=t0, b=t1, sel=sel[1], out=t4);
+    Mux(a=t2, b=t3, sel=sel[1], out=t5);
+    
+    Mux(a=t4, b=t5, sel=sel[0], out=out);
+}
+
