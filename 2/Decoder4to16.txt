@@ -1,0 +1,47 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/2/Decoder4to16.hdl
+
+/**
+ * 4-to-16 Decoder:
+ * Decodes a 4-bit input into one of sixteen output lines.
+ * Uses four 2-to-4 decoders.
+ */
+
+CHIP Decoder2to4 {
+    IN A, B, Enable;
+    OUT Out[4];
+
+    PARTS:
+    // AND gates to enable each output based on inputs A and B
+    Not(a=A, out=notA);
+    Not(a=B, out=notB);
+    
+    And(a=notA, b=notB, out=Out[0]);
+    And(a=notA, b=B, out=Out[1]);
+    And(a=A, b=notB, out=Out[2]);
+    And(a=A, b=B, out=Out[3]);
+
+    // Only allow output if Enable is true
+    And(a=Enable, b=Out[0], out=Out[0]);
+    And(a=Enable, b=Out[1], out=Out[1]);
+    And(a=Enable, b=Out[2], out=Out[2]);
+    And(a=Enable, b=Out[3], out=Out[3]);
+}
+
+CHIP Decoder4to16 {
+    IN A[4];
+    OUT Out[16];
+
+    PARTS:
+    // Decode the two most significant bits (A[3] and A[2])
+    // These outputs act as enableSs for the lower-level decoders
+    Decoder2to4(A=A[2], B=A[3], Enable=true, Out=enable);
+
+    // Each lower decoder interprets the two least significant bits (A[1] and A[0])
+    Decoder2to4(A=A[0], B=A[1], EnaSble=enable[0], Out=Out[0..3]);
+    Decoder2to4(A=A[0], B=A[1], Enable=enable[1], Out=Out[4..7]);
+    Decoder2to4(A=A[0], B=A[1], Enable=enable[2], Out=Out[8..11]);
+    Decoder2to4(A=A[0], B=A[1], Enable=enable[3], Out=Out[12..15]);
+}

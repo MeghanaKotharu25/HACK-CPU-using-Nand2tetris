@@ -1,0 +1,23 @@
+// FullAdder.hdl
+// A Full Adder that sums two bits and a carry in.
+
+CHIP FullAdder{
+    IN a, b, carryIn; // 1-bit inputs
+    OUT sum, carryOut; // Outputs: sum and carry out
+
+    PARTS:
+    // XOR for (a XOR b)
+    Xor(a=a, b=b, out=xorAB);
+
+    // XOR for (xorAB XOR carryIn) to get the sum
+    Xor(a=xorAB, b=carryIn, out=sum);
+
+    // AND for (a AND b)
+    And(a=a, b=b, out=andAB);
+
+    // AND for (carryIn AND (a XOR b))
+    And(a=carryIn, b=xorAB, out=andCarryInXorAB);
+
+    // OR for carryOut = (a AND b) OR (carryIn AND (a XOR b))
+    Or(a=andAB, b=andCarryInXorAB, out=carryOut);
+}

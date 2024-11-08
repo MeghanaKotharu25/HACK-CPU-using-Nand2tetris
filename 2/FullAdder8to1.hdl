@@ -1,0 +1,17 @@
+// Full Adder using Mux8to1 for Sum and Cout
+CHIP FullAdder8to1 {
+    IN A, B, Cin;
+    OUT Sum, Cout;
+
+    PARTS:
+
+    // Sum implementation using the custom Mux8to1
+    Mux8to1(a=false, b=true, c=true, d=false, e=true, f=false,
+            g=false, h=true, sel[0]=A, sel[1]=B, sel[2]=Cin,
+            out=Sum);
+
+    // Cout implementation using the custom Mux8to1
+    Mux8to1(a=false, b=false, c=false, d=true, e=false, f=true,
+            g=true, h=true, sel[0]=A, sel[1]=B, sel[2]=Cin,
+            out=Cout);
+}

@@ -1,0 +1,25 @@
+CHIP FullAdder4 {
+    IN a, b, carryIn;
+    OUT sum, carryOut;
+
+    PARTS:
+    // XOR for (a XOR b)
+    Mux4to1(in[0]=false, in[1]=true, in[2]=true, in[3]=false,
+            sel[0]=a, sel[1]=b, out=xorAB);
+
+    // XOR for (a XOR b) XOR carryIn to get the sum
+    Mux4to1(in[0]=false, in[1]=true, in[2]=true, in[3]=false,
+            sel[0]=xorAB, sel[1]=carryIn, out=sum);
+
+    // AND for (a AND b)
+    Mux4to1(in[0]=false, in[1]=false, in[2]=false, in[3]=true,
+            sel[0]=a, sel[1]=b, out=andAB);
+
+    // AND for carryIn AND (a XOR b)
+    Mux4to1(in[0]=false, in[1]=false, in[2]=false, in[3]=true,
+            sel[0]=carryIn, sel[1]=xorAB, out=andCarryInXorAB);
+
+    // OR for carryOut = (a AND b) OR (carryIn AND (a XOR b))
+    Mux4to1(in[0]=false, in[1]=true, in[2]=true, in[3]=true,
+            sel[0]=andAB, sel[1]=andCarryInXorAB, out=carryOut);
+}

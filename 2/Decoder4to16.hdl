@@ -1,0 +1,20 @@
+CHIP Decoder4to16 {
+    IN in[4], enable;
+    OUT out[16];
+    
+    PARTS:
+    // Get individual bits from input bus
+    DMux4Way(in=enable, sel=in[0..1], a=en0, b=en1, c=en2, d=en3);
+    
+    // Group 0 (outputs 0-3)
+    DMux4Way(in=en0, sel=in[2..3], a=out[0], b=out[1], c=out[2], d=out[3]);
+    
+    // Group 1 (outputs 4-7)
+    DMux4Way(in=en1, sel=in[2..3], a=out[4], b=out[5], c=out[6], d=out[7]);
+    
+    // Group 2 (outputs 8-11)
+    DMux4Way(in=en2, sel=in[2..3], a=out[8], b=out[9], c=out[10], d=out[11]);
+    
+    // Group 3 (outputs 12-15)
+    DMux4Way(in=en3, sel=in[2..3], a=out[12], b=out[13], c=out[14], d=out[15]);
+}

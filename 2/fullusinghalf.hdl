@@ -1,0 +1,17 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/2/fullusinghalf.hdl
+/** 
+ * Full Adder:
+ * Computes sum and carry from inputs a, b and carryIn
+ */
+CHIP fullusinghalf {
+    IN a, b, carryIn;   // Declare inputs
+    OUT sum, carryOut;   // Declare outputs
+
+    PARTS:
+    HalfAdder(a=a, b=b, sum=sum1, carry=carry1); 
+    HalfAdder(a=sum1, b=carryIn, sum=sum, carry=carry2); 
+    Or(a=carry1, b=carry2, out=carryOut); 
+}

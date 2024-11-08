@@ -1,0 +1,22 @@
+// 8-bit ALU in Nand2Tetris
+// Performs x + y, x & y, !x
+
+CHIP ALU8 {
+    IN x[8], y[8], op[2];   // Inputs: x and y (8-bit), op (2-bit control)
+    OUT out[8];              // 8-bit output for the result
+
+    PARTS:
+    
+    // Addition: x + y
+    ADD8(a=x, b=y, out=addResult);
+
+    // Bitwise AND: x & y
+    AND8(a=x, b=y, out=andResult);
+
+    // Bitwise NOT: !x
+    NOT8(in=x, out=notResult);
+
+    // Multiplexer to select operation based on op
+    MUX8WAY16(a=addResult, b=andResult, c=notResult, d=false, 
+              e=false, f=false, g=false, h=false, sel=op, out=out);
+}

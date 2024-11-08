@@ -1,0 +1,30 @@
+CHIP Compare2Bit {
+    IN A1, A0, B1, B0;
+    OUT Equal, AGreater, BGreater;
+
+    PARTS:
+    // Check if A and B are equal
+    Xor(a=A1, b=B1, out=w1);
+    Not(in=w1, out=w2);
+    Xor(a=A0, b=B0, out=w3); 
+    Not(in=w3, out=w4);
+    And(a=w2, b=w4, out=Equal);
+
+    // Get the inverse of B1, B0, A1, A0
+    Not(in=B1, out=notB1);
+    Not(in=B0, out=notB0);
+    Not(in=A1, out=notA1);
+    Not(in=A0, out=notA0);
+
+    // Check if A > B
+    And(a=A1, b=notB1, out=w5);
+    And(a=A0, b=notB0, out=w6);
+    And(a=w2, b=w6, out=w7);
+    Or(a=w5, b=w7, out=AGreater);
+
+    // Check if A < B
+    And(a=B1, b=notA1, out=w8);
+    And(a=B0, b=notA0, out=w9);
+    And(a=w2, b=w9, out=w10);
+    Or(a=w8, b=w10, out=BGreater);
+}

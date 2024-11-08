@@ -1,0 +1,70 @@
+CHIP decoder {
+    IN a, b, c, d;
+    OUT d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16;
+
+    PARTS:
+    // 2-to-4 Decoder
+    Not(in=a, out=nota);
+    Not(in=b, out=notb);
+
+    And(a=nota, b=notb, out=yo);  // 00
+    And(a=nota, b=b, out=y1);     // 01
+    And(a=a, b=notb, out=y2);     // 10
+    And(a=a, b=b, out=y3);        // 11
+
+    // 4-to-16 Decoder
+    Not(in=c, out=notc);
+    Not(in=d, out=notd);
+
+    // Outputs for yo
+    And(a=notc, b=notd, out=intermediate1);
+    And(a=intermediate1, b=yo, out=d1);
+
+    And(a=notc, b=d, out=intermediate2);
+    And(a=intermediate2, b=yo, out=d2);
+
+    And(a=c, b=notd, out=intermediate3);
+    And(a=intermediate3, b=yo, out=d3);
+
+    And(a=c, b=d, out=intermediate4);
+    And(a=intermediate4, b=yo, out=d4);
+
+    // Outputs for y1
+    And(a=notc, b=notd, out=intermediate5);
+    And(a=intermediate5, b=y1, out=d5);
+
+    And(a=notc, b=d, out=intermediate6);
+    And(a=intermediate6, b=y1, out=d6);
+
+    And(a=c, b=notd, out=intermediate7);
+    And(a=intermediate7, b=y1, out=d7);
+
+    And(a=c, b=d, out=intermediate8);
+    And(a=intermediate8, b=y1, out=d8);
+
+    // Outputs for y2
+    And(a=notc, b=notd, out=intermediate9);
+    And(a=intermediate9, b=y2, out=d9);
+
+    And(a=notc, b=d, out=intermediate10);
+    And(a=intermediate10, b=y2, out=d10);
+
+    And(a=c, b=notd, out=intermediate11);
+    And(a=intermediate11, b=y2, out=d11);
+
+    And(a=c, b=d, out=intermediate12);
+    And(a=intermediate12, b=y2, out=d12);
+
+    // Outputs for y3
+    And(a=notc, b=notd, out=intermediate13);
+    And(a=intermediate13, b=y3, out=d13);
+
+    And(a=notc, b=d, out=intermediate14);
+    And(a=intermediate14, b=y3, out=d14);
+
+    And(a=c, b=notd, out=intermediate15);
+    And(a=intermediate15, b=y3, out=d15);
+
+    And(a=c, b=d, out=intermediate16);
+    And(a=intermediate16, b=y3, out=d16);
+}

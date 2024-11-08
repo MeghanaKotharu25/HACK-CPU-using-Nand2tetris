@@ -1,0 +1,26 @@
+CHIP Decoder2to4 {
+    IN A, B, Enable;
+    OUT Out[4];
+    
+    PARTS:
+    // First generate the inverted inputs we'll need
+    Not(in=A, out=notA);
+    Not(in=B, out=notB);
+    
+    // Generate each output using basic AND gates
+    // Out[0]: Enable AND (NOT A) AND (NOT B)
+    And(a=notA, b=notB, out=line0);
+    And(a=line0, b=Enable, out=Out[0]);
+    
+    // Out[1]: Enable AND (NOT A) AND B
+    And(a=notA, b=B, out=line1);
+    And(a=line1, b=Enable, out=Out[1]);
+    
+    // Out[2]: Enable AND A AND (NOT B)
+    And(a=A, b=notB, out=line2);
+    And(a=line2, b=Enable, out=Out[2]);
+    
+    // Out[3]: Enable AND A AND B
+    And(a=A, b=B, out=line3);
+    And(a=line3, b=Enable, out=Out[3]);
+}

@@ -1,0 +1,30 @@
+CHIP FullAdder8 {
+    IN a, b, carryIn;
+    OUT sum, carryOut;
+
+    PARTS:
+    // XOR for (a XOR b)
+    Mux8to1(in[0]=false, in[1]=true, in[2]=true, in[3]=false,
+            in[4]=true, in[5]=false, in[6]=false, in[7]=true,
+            sel[0]=a, sel[1]=b, sel[2]=false, out=xorAB);
+    
+    // XOR for (a XOR b) XOR carryIn to get the sum
+    Mux8to1(in[0]=false, in[1]=true, in[2]=true, in[3]=false,
+            in[4]=true, in[5]=false, in[6]=false, in[7]=true,
+            sel[0]=xorAB, sel[1]=carryIn, sel[2]=false, out=sum);
+
+    // AND for (a AND b)
+    Mux8to1(in[0]=false, in[1]=false, in[2]=false, in[3]=false,
+            in[4]=false, in[5]=false, in[6]=true, in[7]=true,
+            sel[0]=a, sel[1]=b, sel[2]=false, out=andAB);
+
+    // AND for carryIn AND (a XOR b)
+    Mux8to1(in[0]=false, in[1]=false, in[2]=false, in[3]=false,
+            in[4]=false, in[5]=false, in[6]=true, in[7]=true,
+            sel[0]=carryIn, sel[1]=xorAB, sel[2]=false, out=andCarryInXorAB);
+
+    // OR for carryOut = (a AND b) OR (carryIn AND (a XOR b))
+    Mux8to1(in[0]=false, in[1]=true, in[2]=true, in[3]=true,
+            in[4]=true, in[5]=true, in[6]=true, in[7]=true,
+            sel[0]=andAB, sel[1]=andCarryInXorAB, sel[2]=false, out=carryOut);
+}
